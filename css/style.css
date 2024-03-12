@@ -1,0 +1,78 @@
+h2 {
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}
+
+body {
+    font-family: Inter, sans-serif;
+    color: #000000;
+    font-size: 18px;
+    font-style: normal;
+    background: #f0f0f0;
+    max-width: 1200px;
+    margin-left: max(0px, calc(50vw - 600px));
+}
+
+form {
+    position: relative;
+    left: 50%;
+    width: 400px;
+    text-align: left;
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #dddddd;
+    margin: 20px 0 20px -215px;
+}
+
+input {
+    font-size: 18px;
+}
+
+input[type=text] {
+    width: 400px;
+    height: 30px;
+    margin: 10px 0px 10px -2px;
+    padding: 0 1px;
+}
+
+input[type=submit], a.button {
+    appearance: none;
+    border: 1px solid;
+    border-radius: 5px;
+    margin: 5px 50px;
+    cursor: pointer;
+    background-color: aliceblue;
+}
+
+input[type=submit] {
+    width: 300px;
+    height: 30px;
+    padding: 3px;
+}
+
+input[type=submit]:hover {
+    border: 2px solid;
+    padding: 2px;
+}
+
+a.button {
+    color: #000000;
+    text-decoration: none;
+    width: 298px;
+    height: 28px;
+    line-height: 28px;
+    display: block;
+    text-align: center;
+    margin-left: max(0px, calc(50% - 150px));
+}
+
+a.button:hover {
+    border: 2px solid;
+    width: 296px;
+    height: 26px;
+    line-height: 26px;
+}

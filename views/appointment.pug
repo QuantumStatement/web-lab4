@@ -1,0 +1,24 @@
+extends layout.pug
+
+block content
+  h2= title
+  form(action="appointment-end.html", method="post")
+    label(for="patient") Пациент
+    br
+    input(type="text", name="patient")
+    br
+    label(for="doctor") Врач
+    br
+    input(type="text", name="doctor")
+    br
+    label(for="date") Дата
+    br
+    input(type="text", name="date", placeholder="20.12.2023")
+    br
+    label(for="time") Время
+    br
+    input(type="text", name="time", placeholder="12:00")
+    br
+    input(type="submit", value="Записаться")
+    br
+    a.button(href="/index.html") Назад

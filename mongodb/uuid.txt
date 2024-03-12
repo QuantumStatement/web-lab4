@@ -1,0 +1,12 @@
+doctors:
+1) 687eb7e8-31eb-4250-b5b2-14e68bf31157
+2) 03beef17-8673-40a8-90b2-60101fedaacc
+                                                                                                                                                                                         
+patients:
+1) ab71d2e0-a475-41d9-b68f-d7999d4250f2
+2) e2a4c459-8090-4a48-843b-a8f8fb33a528
+3) 8a39e25b-f5e1-4b72-8d25-8b6ac49b9797
+
+records:
+ab71d2e0-a475-41d9-b68f-d7999d4250f2 -> 687eb7e8-31eb-4250-b5b2-14e68bf31157
+e2a4c459-8090-4a48-843b-a8f8fb33a528 -> 03beef17-8673-40a8-90b2-60101fedaacc

@@ -52,74 +52,49 @@ async function addDoctors() {
     doctorId: new BSON.UUID(d[0]),
     name: 'Володя',
     spec: 'Терапевт',
-    timeSlots: [
-      '2023-12-25T09:00:00.000+03:00',
-      '2023-12-25T09:10:00.000+03:00',
-      '2023-12-25T09:20:00.000+03:00',
-      '2023-12-25T09:30:00.000+03:00',
-      '2023-12-25T09:40:00.000+03:00',
-      '2023-12-25T09:50:00.000+03:00',
-      '2023-12-25T10:00:00.000+03:00',
-      '2023-12-25T10:10:00.000+03:00',
-      '2023-12-25T10:20:00.000+03:00',
-      '2023-12-25T10:30:00.000+03:00',
-      '2023-12-25T10:40:00.000+03:00',
-      '2023-12-25T10:50:00.000+03:00',
-      '2023-12-26T09:00:00.000+03:00',
-      '2023-12-26T09:10:00.000+03:00',
-      '2023-12-26T09:20:00.000+03:00',
-      '2023-12-26T09:30:00.000+03:00',
-      '2023-12-26T09:40:00.000+03:00',
-      '2023-12-26T09:50:00.000+03:00',
-      '2023-12-26T10:00:00.000+03:00',
-      '2023-12-26T10:10:00.000+03:00',
-      '2023-12-26T10:20:00.000+03:00',
-      '2023-12-26T10:30:00.000+03:00',
-      '2023-12-26T10:40:00.000+03:00',
-      '2023-12-26T10:50:00.000+03:00'
-    ]
+    timeSlots: addTimeSlots(10)
   });
 
   const doctor2 = new clinic.Doctors({
     doctorId: new BSON.UUID(d[1]),
     name: 'Настя',
     spec: 'Офтальмолог',
-    timeSlots: [
-      '2023-12-25T09:00:00.000+03:00',
-      '2023-12-25T09:15:00.000+03:00',
-      '2023-12-25T09:30:00.000+03:00',
-      '2023-12-25T09:45:00.000+03:00',
-      '2023-12-25T10:00:00.000+03:00',
-      '2023-12-25T10:15:00.000+03:00',
-      '2023-12-25T10:30:00.000+03:00',
-      '2023-12-25T10:45:00.000+03:00',
-      '2023-12-26T09:00:00.000+03:00',
-      '2023-12-26T09:15:00.000+03:00',
-      '2023-12-26T09:30:00.000+03:00',
-      '2023-12-26T09:45:00.000+03:00',
-      '2023-12-26T10:00:00.000+03:00',
-      '2023-12-26T10:15:00.000+03:00',
-      '2023-12-26T10:30:00.000+03:00',
-      '2023-12-26T10:45:00.000+03:00'
-    ]
+    timeSlots: addTimeSlots(15)
   });
   await doctor1.save();
   await doctor2.save();
 }
 
 async function addVisitRecords() {
+  var date = new Date();
+  date.setDate(date.getDate() + 1);
+  date.setHours(10, 30, 0, 0);
   const visit1 = new clinic.VisitRecords({
     patientId: new BSON.UUID(p[0]),
     doctorId: new BSON.UUID(d[1]),
-    visitDate: '2023-12-26T10:15:00.000+03:00'
+    visitDate: date
   });
-
+  date.setHours(9, 15, 0, 0);
   const visit2 = new clinic.VisitRecords({
     patientId: new BSON.UUID(p[1]),
     doctorId: new BSON.UUID(d[0]),
-    visitDate: '2023-12-26T09:30:00.000+03:00'
+    visitDate: date
   });
 
   await visit1.save();
   await visit2.save();
+}
+
+function addTimeSlots(interval) {
+  var slots = [];
+  var startDate = new Date();
+  for (let i = 1; i <= 3; i++) {
+    startDate.setDate(startDate.getDate() + 1);
+    startDate.setHours(8, 0, 0, 0);
+    while (startDate.getHours() < 13) {
+      slots.push(startDate);
+      startDate.setMinutes(startDate.getMinutes() + interval);
+    }
+  }
+  return slots;
 }

@@ -1,0 +1,15 @@
+extends layout.pug
+
+block content
+  h2= title
+  if data.success
+    p Запись произошла успешно
+    p Врач: #{data.doctorName}
+    p Специальность: #{data.doctorSpec}
+    p Дата: #{date}
+    p Время: #{time}
+    a.button(href="/") На главную
+  else
+    p Произошла ошибка при записи
+    p= data.text
+    a.button(href="appointment.html") Назад

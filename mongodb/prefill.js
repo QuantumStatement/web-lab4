@@ -54,6 +54,7 @@ async function addDoctors() {
     spec: 'Терапевт',
     timeSlots: addTimeSlots(10)
   });
+  await doctor1.save();
 
   const doctor2 = new clinic.Doctors({
     doctorId: new BSON.UUID(d[1]),
@@ -61,7 +62,6 @@ async function addDoctors() {
     spec: 'Офтальмолог',
     timeSlots: addTimeSlots(15)
   });
-  await doctor1.save();
   await doctor2.save();
 }
 
@@ -74,25 +74,26 @@ async function addVisitRecords() {
     doctorId: new BSON.UUID(d[1]),
     visitDate: date
   });
+  await visit1.save();
   date.setHours(9, 15, 0, 0);
   const visit2 = new clinic.VisitRecords({
     patientId: new BSON.UUID(p[1]),
     doctorId: new BSON.UUID(d[0]),
     visitDate: date
   });
-
-  await visit1.save();
   await visit2.save();
 }
 
 function addTimeSlots(interval) {
   var slots = [];
-  var startDate = new Date();
+  const startDate = new Date();
   for (let i = 1; i <= 3; i++) {
     startDate.setDate(startDate.getDate() + 1);
     startDate.setHours(8, 0, 0, 0);
     while (startDate.getHours() < 13) {
-      slots.push(startDate);
+      const date = new Date();
+      date.setTime(startDate.getTime());
+      slots.push(date);
       startDate.setMinutes(startDate.getMinutes() + interval);
     }
   }

@@ -27,10 +27,22 @@
 <details>
 <summary>Тыц</summary>
 
+Стартовый экран
 ![start](img/start.png)
-![appointment](img/appointment.png)
-![appointment-success](img/appointment-success.png)
-![appointment-fail](img/appointment-fail.png)
+
+Пример успешной записи
+![appointment success start](img/appointment-success-1.png)
+![appointment success end](img/appointment-success-2.png)
+
+Пример попытки записи на занятый слот
+![appointment occupied start](img/appointment-occupied-1.png)
+![appointment occupied end](img/appointment-occupied-2.png)
+
+Пример попытки записи на несуществующее время
+![appointment non-exist start](img/appointment-nonexist-1.png)
+![appointment non-exist end](img/appointment-nonexist-2.png)
+
+Уведомления о приеме
 ![notification](img/notification.png)
 </details>
 

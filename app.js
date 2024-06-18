@@ -72,7 +72,7 @@ function parseDate(date, time) {
   return new Date(fullDate);
 }
 
-async function poll(minutes) {
+async function notification(minutes) {
   interval = minutes * 60 * 1000;
   isConnected = await db.dbConnect();
   if (!isConnected) {
@@ -105,4 +105,4 @@ async function poll(minutes) {
 // listen
 app.listen(3000);
 console.log('listening on port 3000');
-poll(1);
+notification(1);

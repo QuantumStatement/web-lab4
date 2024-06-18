@@ -6,6 +6,7 @@ const router = require('@koa/router')();
 const static = require('koa-static');
 const koaBody = require('koa-body');
 const db = require('./mongodb/db');
+const { exit } = require('process');
 
 const title = 'Запись на прием к врачу';
 const render = views(path.join(__dirname, '/views'), { extension: 'pug' });
@@ -17,11 +18,7 @@ app.use(async(ctx, next) => {
   try {
     await next();
     if (!isConnected) {
-      var conn = await db.dbConnect();
-      isConnected = conn;
-      if (!conn) {
-        ctx.throw(503);
-      }
+      ctx.throw(503);
     }
     const status = ctx.status || 404;
     if (status == 404) {
@@ -75,6 +72,37 @@ function parseDate(date, time) {
   return new Date(fullDate);
 }
 
+async function poll(minutes) {
+  interval = minutes * 60 * 1000;
+  isConnected = await db.dbConnect();
+  if (!isConnected) {
+    console.log('No database connection');
+    process.exit(-1);
+  }
+  console.log('connected to database');
+  (async function p() {
+    if (isConnected) {
+      const now = new Date();
+      let start = new Date(now);
+      start.setHours(start.getHours() + 2);
+      let end = new Date(start);
+      end.setMinutes(end.getMinutes() + minutes);
+      for (const record of await db.findTimedRecords(start, end)) {
+        console.log('%s | Привет, %s! Вам через 2 часа к %s в %s:%s!', 
+          now, record.patientName, record.doctorSpec, record.time.getHours(), record.time.getMinutes());
+      }
+      start.setHours(start.getHours() + 22);
+      end.setHours(end.getHours() + 22);
+      for (const record of await db.findTimedRecords(start, end)) {
+        console.log('%s | Привет, %s! Напоминаем, что вы записаны к %s завтра в %s:%s!', 
+          now, record.patientName, record.doctorSpec, record.time.getHours(), record.time.getMinutes());
+      }
+    }
+    setTimeout(p, interval);
+  })();
+}
+
 // listen
 app.listen(3000);
 console.log('listening on port 3000');
+poll(1);

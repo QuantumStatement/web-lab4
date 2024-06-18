@@ -2,17 +2,9 @@ const mongoose = require('mongoose');
 const { BSON } = require('mongodb');
 const clinic = require('./schemas');
 
-// functions
 module.exports.dbConnect = async function dbConnect() {
-  var isConn = false;
   await mongoose.connect('mongodb://localhost:27017/clinic');
-  if (mongoose.connection.readyState == 1) {
-    console.log('connected to database')
-    isConn = true;
-  } else {
-    console.error;
-  }
-  return isConn;
+  return mongoose.connection.readyState == 1;
 }
 
 module.exports.addRecord = async function addRecord(patient_id, doctor_id, visit_date) {
@@ -42,13 +34,13 @@ module.exports.addRecord = async function addRecord(patient_id, doctor_id, visit
     }
   }
   if (!isSlotFound) {
-    answer.text = 'У врача такой временной слот отсутствует';
+    answer.text = 'Врач не принимает в указанное время';
     return answer;
   }
   const visit = await clinic.VisitRecords.findOne({doctorId: doctorUuid, visitDate: visit_date});
   console.log(visit);
   if (visit != undefined) {
-    answer.text = 'Указанный временной слот врача уже занят';
+    answer.text = 'Указанное время занято другим пациентом';
     return answer;
   }
   const newVisit = new clinic.VisitRecords({
@@ -61,4 +53,17 @@ module.exports.addRecord = async function addRecord(patient_id, doctor_id, visit
   answer.doctorSpec = doctor.spec;
   answer.success = true;
   return answer;
+}
+
+module.exports.findTimedRecords = async function findTimedRecords(startDate, endDate) {
+  var list = [];
+  const visit = await clinic.VisitRecords.find({
+    visitDate: { $gte: startDate, $lte: endDate }
+  }).exec();
+  for (const v of visit) {
+    let doctor = await clinic.Doctors.findOne({doctorId: v.doctorId}, 'name, spec');
+    let patient = await clinic.Patients.findOne({patientId: v.patientId}, 'name');
+    list.push({patientName: patient.name, doctorSpec: doctor.spec, time: v.visitDate});
+  }
+  return list;
 }

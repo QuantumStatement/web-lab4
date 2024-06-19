@@ -4,9 +4,8 @@ const path = require('path');
 const Koa = require('koa');
 const router = require('@koa/router')();
 const static = require('koa-static');
-const koaBody = require('koa-body');
+const { koaBody } = require('koa-body');
 const db = require('./mongodb/db');
-const { exit } = require('process');
 
 const title = 'Запись на прием к врачу';
 const render = views(path.join(__dirname, '/views'), { extension: 'pug' });
@@ -27,7 +26,7 @@ app.use(async(ctx, next) => {
   } catch (err) {
     var text = '';
     ctx.status = err.status || 500;
-    if ((ctx.status === 404)) {
+    if (ctx.status === 404) {
       text = 'Not found';
     }
     else {

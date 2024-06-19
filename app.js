@@ -86,7 +86,7 @@ async function notification(minutes) {
       let start = new Date(now);
       start.setHours(start.getHours() + 2);
       let end = new Date(start);
-      end.setMinutes(end.getMinutes() + minutes);
+      start.setMinutes(start.getMinutes() - minutes);
       for (const record of await db.findTimedRecords(start, end)) {
         console.log('%s | Привет, %s! Вам через 2 часа к %s в %s:%s!', 
           now, record.patientName, record.doctorSpec, record.time.getHours(), record.time.getMinutes());
